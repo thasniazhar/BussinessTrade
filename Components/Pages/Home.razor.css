@@ -350,3 +350,38 @@
     color: #eab308;
     border: 1px solid rgba(234, 179, 8, 0.2);
 }
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .mid-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .overview-dashboard {
+        padding: 20px;
+    }
+    
+    .overview-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .header-actions a {
+        justify-content: center;
+        width: 100%;
+    }
+}
