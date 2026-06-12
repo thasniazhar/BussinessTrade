@@ -1,0 +1,180 @@
+@page "/"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Overview - YKodeX</PageTitle>
+
+<div class="overview-dashboard">
+    <header class="overview-header">
+        <div class="header-titles">
+            <h1>Overview</h1>
+            <p>Real-time trading and inventory metrics.</p>
+        </div>
+        <div class="header-actions">
+            <a class="export-btn" href="/purchase" style="text-decoration: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                Add Purchase
+            </a>
+            <a class="create-btn" href="/sales/new" style="text-decoration: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Create New Sale
+            </a>
+        </div>
+    </header>
+
+    <section class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-top">
+                <span class="kpi-title">TOTAL SALES</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#657895" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            </div>
+            <div class="kpi-value">$2.45M</div>
+            <div class="kpi-trend up"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg> 12.5%</div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-top">
+                <span class="kpi-title">TOTAL PURCHASES</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#657895" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <div class="kpi-value">$1.12M</div>
+            <div class="kpi-trend down"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg> 4.2%</div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-top">
+                <span class="kpi-title">NET PROFIT</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#657895" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <div class="kpi-value">$1.33M</div>
+            <div class="kpi-trend up"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg> 8.7%</div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-top">
+                <span class="kpi-title">LOW STOCK ALERTS</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="kpi-value alert-val">14</div>
+            <div class="kpi-trend neutral link-style">Items require attention <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+        </div>
+    </section>
+
+    <div class="mid-section">
+        <div class="panel-card chart-card">
+            <div class="panel-header">
+                <h2>Sales Trends</h2>
+                <div class="chart-toggles">
+                    <button>1W</button>
+                    <button class="active">1M</button>
+                    <button>1Y</button>
+                </div>
+            </div>
+            <div class="chart-area">
+                <svg viewBox="0 0 500 200" preserveAspectRatio="none">
+                    <!-- Subtle background grid lines -->
+                    <line x1="0" y1="50" x2="500" y2="50" stroke="#10203a" stroke-width="1" />
+                    <line x1="0" y1="100" x2="500" y2="100" stroke="#10203a" stroke-width="1" />
+                    <line x1="0" y1="150" x2="500" y2="150" stroke="#10203a" stroke-width="1" />
+                    <line x1="0" y1="200" x2="500" y2="200" stroke="#10203a" stroke-width="1" />
+                    
+                    <!-- Line chart path -->
+                    <path d="M0 180 L40 140 L80 160 L140 100 L180 120 L250 50 L320 80 L390 30 L450 70 L500 40" fill="none" stroke="#c3b2f1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                    
+                    <!-- Gradient fill under line -->
+                    <path d="M0 180 L40 140 L80 160 L140 100 L180 120 L250 50 L320 80 L390 30 L450 70 L500 40 L500 200 L0 200 Z" fill="url(#chart-gradient)" opacity="0.15" />
+                    <defs>
+                        <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#c3b2f1" />
+                            <stop offset="100%" stop-color="transparent" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+
+        <div class="panel-card top-items-card">
+            <div class="panel-header">
+                <h2>Top Selling Items</h2>
+            </div>
+            <div class="items-list">
+                <div class="top-item">
+                    <div class="item-icon">AAP</div>
+                    <div class="item-info">
+                        <strong>Apple Inc.</strong>
+                        <span>Tech</span>
+                    </div>
+                    <div class="item-stats">
+                        <strong class="units">1,240 U</strong>
+                        <span class="trend up">+4.2%</span>
+                    </div>
+                </div>
+                <div class="top-item">
+                    <div class="item-icon">MSF</div>
+                    <div class="item-info">
+                        <strong>Microsoft</strong>
+                        <span>Tech</span>
+                    </div>
+                    <div class="item-stats">
+                        <strong class="units">980 U</strong>
+                        <span class="trend up">+2.1%</span>
+                    </div>
+                </div>
+                <div class="top-item">
+                    <div class="item-icon">TSL</div>
+                    <div class="item-info">
+                        <strong>Tesla Inc.</strong>
+                        <span>Auto</span>
+                    </div>
+                    <div class="item-stats">
+                        <strong class="units">850 U</strong>
+                        <span class="trend down">-1.5%</span>
+                    </div>
+                </div>
+                <div class="top-item">
+                    <div class="item-icon">NVG</div>
+                    <div class="item-info">
+                        <strong>Nvidia</strong>
+                        <span>Semi</span>
+                    </div>
+                    <div class="item-stats">
+                        <strong class="units">720 U</strong>
+                        <span class="trend up">+8.4%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-card table-card">
+        <div class="panel-header">
+            <h2>Recent Sales</h2>
+            <button class="view-all-btn">View All <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        </div>
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>DATE</th>
+                        <th>CUSTOMER</th>
+                        <th class="text-right">AMOUNT</th>
+                        <th class="text-center">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Oct 24, 14:30</td>
+                        <td>Quantum Capital</td>
+                        <td class="text-right">$450,000.00</td>
+                        <td class="text-center"><span class="status-badge completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>Oct 24, 13:15</td>
+                        <td>Apex Holdings</td>
+                        <td class="text-right">$125,500.00</td>
+                        <td class="text-center"><span class="status-badge completed">Completed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

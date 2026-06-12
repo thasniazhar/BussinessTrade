@@ -1,0 +1,257 @@
+@page "/sales/debit-note/new"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Debit Note Entry</PageTitle>
+
+<div class="sales-invoice-page">
+    <h1>Debit Note</h1>
+
+    <section class="invoice-card buyer-card">
+        <div class="card-title-row">
+            <h2>Buyer Information</h2>
+            <button type="button" class="purple-button">Save Buyer</button>
+        </div>
+
+        <p class="invoice-help">Type Seller Name, VAT Number, or Mobile to search. Select from dropdown list. Fill manually to add new.</p>
+
+        <div class="invoice-grid search-grid">
+            <div class="invoice-field">
+                <label>Search by Name</label>
+                <input placeholder="Type name" />
+            </div>
+            <div class="invoice-field">
+                <label>Search by VAT Number</label>
+                <input placeholder="Type VAT number" />
+            </div>
+            <div class="invoice-field">
+                <label>Search by Mobile</label>
+                <input placeholder="Type mobile number" />
+            </div>
+        </div>
+
+        <div class="invoice-grid buyer-grid">
+            <div class="invoice-field">
+                <label>Name</label>
+                <input @bind="BuyerName" placeholder="Buyer name" />
+            </div>
+            <div class="invoice-field">
+                <label>VAT Registration Number</label>
+                <input @bind="BuyerVat" placeholder="VAT Number *" />
+            </div>
+            <div class="invoice-field">
+                <label>CR Number</label>
+                <input placeholder="CR Number" />
+            </div>
+            <div class="invoice-field">
+                <label>Phone</label>
+                <input @bind="BuyerPhone" placeholder="Phone number" />
+            </div>
+
+            <div class="invoice-field">
+                <label>Street name</label>
+                <input placeholder="Street name" />
+            </div>
+            <div class="invoice-field">
+                <label>Building number</label>
+                <input placeholder="Building number" />
+            </div>
+            <div class="invoice-field">
+                <label>Additional number (Secondary number)</label>
+                <input placeholder="Additional number (Secondary number)" />
+            </div>
+            <div class="invoice-field">
+                <label>District</label>
+                <input placeholder="District" />
+            </div>
+
+            <div class="invoice-field">
+                <label>City</label>
+                <input placeholder="City" />
+            </div>
+            <div class="invoice-field">
+                <label>Postal code</label>
+                <input placeholder="Postal code" />
+            </div>
+            <div class="invoice-field">
+                <label>Province/Region</label>
+                <input placeholder="Province/Region" />
+            </div>
+            <div class="invoice-field">
+                <label>Country</label>
+                <input value="Saudi Arabia (SA)" />
+            </div>
+
+            <div class="invoice-field email-field">
+                <label>Email</label>
+                <input placeholder="Email address" />
+            </div>
+        </div>
+    </section>
+
+    <section class="invoice-card invoice-meta">
+        <div class="invoice-field">
+            <label>Debit Note No</label>
+            <input @bind="NoteNo" />
+        </div>
+        <div class="invoice-field">
+            <label>Orig. Invoice No</label>
+            <input @bind="OriginalInvoiceNo" placeholder="Ref Invoice No" />
+        </div>
+        <div class="invoice-field date-field">
+            <label>Date</label>
+            <input type="date" @bind="NoteDate" />
+        </div>
+        <div class="invoice-field payment-field">
+            <label>Reason for Debit</label>
+            <select @bind="Reason">
+                <option value=""></option>
+                <option>Additional Charge</option>
+                <option>Undercharge Correction</option>
+                <option>Other</option>
+            </select>
+        </div>
+        <div class="invoice-type-box">
+            <div class="invoice-type-title">Debit Type</div>
+            <label><input type="radio" name="invoice-type" checked="@(NoteType == "B2B")" @onchange="@(() => NoteType = "B2B")" /> B2B</label>
+            <label><input type="radio" name="invoice-type" checked="@(NoteType == "B2C")" @onchange="@(() => NoteType = "B2C")" /> B2C</label>
+            <div class="check-row">
+                <label><input type="checkbox" checked /> Print</label>
+            </div>
+        </div>
+    </section>
+
+    <section class="item-entry-strip">
+        <input class="code-input" @bind="ItemCode" placeholder="Item Code" />
+        <input @bind="EnglishNameSearch" placeholder="English Name Search" />
+        <input @bind="ArabicNameSearch" placeholder="Arabic Name Search" />
+        <input class="number-input" type="number" @bind="UnitPrice" placeholder="Price" />
+        <input class="number-input" type="number" @bind="Quantity" placeholder="Quantity" />
+        <button type="button" @onclick="AddLine">Add Line</button>
+    </section>
+
+    <section class="invoice-table-card">
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Item Code</th>
+                    <th>English Name</th>
+                    <th>Arabic Name</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>VAT (15%)</th>
+                    <th>Sub Total</th>
+                    <th>VAT Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Lines.Count == 0)
+                {
+                    <tr>
+                        <td colspan="11" class="empty-row">No items added yet</td>
+                    </tr>
+                }
+                else
+                {
+                    @for (var index = 0; index < Lines.Count; index++)
+                    {
+                        var line = Lines[index];
+                        <tr>
+                            <td>@(index + 1)</td>
+                            <td>@line.Code</td>
+                            <td>@line.EnglishName</td>
+                            <td>@line.ArabicName</td>
+                            <td>@line.UnitPrice.ToString("0.00")</td>
+                            <td>@line.Quantity</td>
+                            <td>@line.Total.ToString("0.00")</td>
+                            <td>@line.Vat.ToString("0.00")</td>
+                            <td>@line.SubTotal.ToString("0.00")</td>
+                            <td>@VatType</td>
+                            <td><button type="button" class="tiny-danger" @onclick="() => RemoveLine(line)">Remove</button></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <section class="invoice-summary-card">
+        <div class="vat-selection">
+            <h3>VAT Type Selection</h3>
+            <label><input type="radio" name="vat-type" checked="@(VatType == "VAT Include")" @onchange="@(() => VatType = "VAT Include")" /> VAT Include</label>
+            <label><input type="radio" name="vat-type" checked="@(VatType == "VAT Exclude")" @onchange="@(() => VatType = "VAT Exclude")" /> VAT Exclude</label>
+            <label><input type="radio" name="vat-type" checked="@(VatType == "Non-Taxable")" @onchange="@(() => VatType = "Non-Taxable")" /> Non-Taxable</label>
+        </div>
+
+        <div class="invoice-totals">
+            <div><span>Discount</span><input type="number" @bind="Discount" /></div>
+            <div><span>Grand Total</span><strong class="green">@GrandTotal.ToString("0.00")</strong></div>
+            <div><span>Total VAT</span><strong>@TotalVat.ToString("0.00")</strong></div>
+            <div class="net-total"><span>Net Debit</span><strong>@NetTotal.ToString("0.00")</strong></div>
+            <small>Amount in Words:</small>
+        </div>
+    </section>
+
+    <section class="invoice-actions">
+        <button type="button" class="save-button" style="background:#00d8bd;">Save Debit Note</button>
+        <button type="button" class="cancel-button" @onclick="GoBack">Cancel</button>
+    </section>
+</div>
+
+@code {
+    private string BuyerName = "";
+    private string BuyerVat = "";
+    private string BuyerPhone = "";
+    private string NoteNo = "DBN-2001";
+    private string OriginalInvoiceNo = "";
+    private DateOnly NoteDate = new(2026, 6, 12);
+    private string Reason = "";
+    private string NoteType = "B2C";
+    private string VatType = "VAT Include";
+    private string ItemCode = "";
+    private string EnglishNameSearch = "";
+    private string ArabicNameSearch = "";
+    private decimal UnitPrice;
+    private int Quantity = 1;
+    private decimal Discount;
+
+    private readonly List<InvoiceLine> Lines = [];
+
+    private decimal GrandTotal => Lines.Sum(x => x.SubTotal);
+    private decimal TotalVat => Lines.Sum(x => x.Vat);
+    private decimal NetTotal => Math.Max(GrandTotal - Discount, 0);
+
+    private void AddLine()
+    {
+        var name = string.IsNullOrWhiteSpace(EnglishNameSearch) ? "Debit Item" : EnglishNameSearch;
+        var code = string.IsNullOrWhiteSpace(ItemCode) ? $"ITM-{Lines.Count + 1:000}" : ItemCode;
+        var price = UnitPrice <= 0 ? 0 : UnitPrice;
+        var quantity = Quantity <= 0 ? 1 : Quantity;
+        Lines.Add(new InvoiceLine(code, name, ArabicNameSearch, price, quantity));
+        ItemCode = "";
+        EnglishNameSearch = "";
+        ArabicNameSearch = "";
+        UnitPrice = 0;
+        Quantity = 1;
+    }
+
+    private void RemoveLine(InvoiceLine line)
+    {
+        Lines.Remove(line);
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/sales");
+    }
+
+    private record InvoiceLine(string Code, string EnglishName, string ArabicName, decimal UnitPrice, int Quantity)
+    {
+        public decimal Total => UnitPrice * Quantity;
+        public decimal Vat => Math.Round(Total * 0.15m, 2);
+        public decimal SubTotal => Total + Vat;
+    }
+}

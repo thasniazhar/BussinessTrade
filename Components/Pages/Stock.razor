@@ -1,0 +1,27 @@
+@page "/stock"
+
+<PageTitle>Stock</PageTitle>
+
+<section class="hero-strip">
+    <div>
+        <p class="eyebrow">Inventory</p>
+        <h1>Stock</h1>
+        <p class="subtle">Stock entry, movements and low-stock alerts.</p>
+    </div>
+    <span class="status warn">14 low stock</span>
+</section>
+
+<section class="panel" style="margin-top:18px">
+    <div class="toolbar" style="margin-top:0">
+        <h2>Stock Report</h2>
+        <button type="button">New Stock Entry</button>
+    </div>
+    <table>
+        <thead><tr><th>Item</th><th>Opening</th><th>In</th><th>Out</th><th>Balance</th></tr></thead>
+        <tbody>
+            <tr><td>Rice 10kg</td><td>70</td><td>30</td><td>16</td><td>84</td></tr>
+            <tr><td>Sunflower Oil</td><td>45</td><td>10</td><td>16</td><td>39</td></tr>
+            <tr><td>Sugar 5kg</td><td>20</td><td>0</td><td>14</td><td><span class="status warn">6</span></td></tr>
+        </tbody>
+    </table>
+</section>

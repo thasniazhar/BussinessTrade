@@ -1,0 +1,31 @@
+@page "/reports"
+
+<PageTitle>Reports</PageTitle>
+
+<section class="hero-strip">
+    <div>
+        <p class="eyebrow">Reports</p>
+        <h1>Sales, Purchase & Summary</h1>
+        <p class="subtle">Daily, monthly, yearly and total summary reports from the reference app flow.</p>
+    </div>
+    <button type="button">Export PDF</button>
+</section>
+
+<section class="report-grid">
+    <div class="panel"><h2>Daily Sales</h2><p class="subtle">26 invoices</p><strong>SAR 18,420</strong></div>
+    <div class="panel"><h2>Monthly Sales</h2><p class="subtle">June 2026</p><strong>SAR 214,900</strong></div>
+    <div class="panel"><h2>Purchase Report</h2><p class="subtle">18 bills</p><strong>SAR 74,300</strong></div>
+    <div class="panel"><h2>Total Summary</h2><p class="subtle">Net movement</p><strong>SAR 140,600</strong></div>
+</section>
+
+<section class="panel" style="margin-top:18px">
+    <h2>Report Details</h2>
+    <table style="margin-top:14px">
+        <thead><tr><th>Date</th><th>Type</th><th>Ref</th><th>Amount</th><th>Status</th></tr></thead>
+        <tbody>
+            <tr><td>11 Jun 2026</td><td>Sales</td><td>S-1048</td><td>SAR 1,240</td><td><span class="status">Posted</span></td></tr>
+            <tr><td>11 Jun 2026</td><td>Purchase</td><td>P-1044</td><td>SAR 3,410</td><td><span class="status">Posted</span></td></tr>
+            <tr><td>11 Jun 2026</td><td>ZATCA</td><td>Z-7781</td><td>SAR 860</td><td><span class="status warn">Pending</span></td></tr>
+        </tbody>
+    </table>
+</section>

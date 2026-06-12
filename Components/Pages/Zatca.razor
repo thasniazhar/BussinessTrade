@@ -1,0 +1,36 @@
+@page "/zatca"
+
+<PageTitle>ZATCA</PageTitle>
+
+<section class="hero-strip">
+    <div>
+        <p class="eyebrow">E-invoice</p>
+        <h1>ZATCA</h1>
+        <p class="subtle">Seller profile, certificate status and invoice submission report.</p>
+    </div>
+    <span class="status warn">5 waiting</span>
+</section>
+
+<section class="split" style="margin-top:18px">
+    <div class="panel">
+        <h2>Seller Information</h2>
+        <div class="form-grid" style="margin-top:14px">
+            <div class="field full"><label>Seller Name</label><input value="YKodeX Trading" /></div>
+            <div class="field"><label>VAT Number</label><input value="300000000000003" /></div>
+            <div class="field"><label>Branch</label><input value="Main Branch" /></div>
+            <div class="field full"><label>Certificate</label><input value="zatca-certificate.pem" /></div>
+        </div>
+        <div class="toolbar"><button type="button">Save Setup</button><button type="button" class="secondary">Test QR</button></div>
+    </div>
+    <div class="panel">
+        <h2>Submission Report</h2>
+        <table style="margin-top:14px">
+            <thead><tr><th>Invoice</th><th>UUID</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td>S-1046</td><td>9fb1-2231</td><td><span class="status">Accepted</span></td></tr>
+                <tr><td>S-1047</td><td>8ad7-1922</td><td><span class="status">Accepted</span></td></tr>
+                <tr><td>S-1048</td><td>Pending</td><td><span class="status warn">Queued</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>

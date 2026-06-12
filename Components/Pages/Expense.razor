@@ -1,0 +1,43 @@
+@page "/expense"
+
+<PageTitle>Expense Entry</PageTitle>
+
+<div class="expense-entry-page">
+    <header class="expense-title">
+        <h1>Expense Entry</h1>
+        <span></span>
+    </header>
+
+    <section class="expense-entry-card">
+        <label>
+            Date
+            <input type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+        </label>
+
+        <label>
+            Category
+            <select>
+                <option>Select category</option>
+                <option>Rent</option>
+                <option>Fuel</option>
+                <option>Salary</option>
+                <option>Miscellaneous</option>
+            </select>
+        </label>
+
+        <label>
+            Description
+            <textarea placeholder="Enter description"></textarea>
+        </label>
+
+        <label>
+            Amount
+            <input type="number" placeholder="0.00" />
+        </label>
+    </section>
+
+    <section class="expense-actions">
+        <button type="button" class="secondary">Cancel</button>
+        <button type="button">Save</button>
+    </section>
+</div>

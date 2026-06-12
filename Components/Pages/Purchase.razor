@@ -1,0 +1,196 @@
+@page "/purchase"
+@rendermode InteractiveServer
+
+<PageTitle>Purchase Bill Entry</PageTitle>
+
+<div class="purchase-entry-page">
+    <h1>Purchase Bill Entry</h1>
+
+    <section class="purchase-banner">
+        <h2>Purchase Bill Entry</h2>
+        <p>Create New Purchase Order</p>
+    </section>
+
+    <section class="purchase-section">
+        <h3>Bill Details</h3>
+        <div class="purchase-bill-grid">
+            <label>
+                Bill No
+                <input @bind="BillNo" />
+            </label>
+            <label class="purchase-date">
+                Date
+                <input type="date" @bind="BillDate" />
+            </label>
+        </div>
+        <button type="button" class="generate-button" @onclick="GenerateBillNumber">Generate Bill Number</button>
+    </section>
+
+    <section class="purchase-section">
+        <h3>Vendor Information</h3>
+        <div class="purchase-grid">
+            <label class="full">
+                Vendor Name
+                <input @bind="VendorName" placeholder="Enter vendor name" />
+            </label>
+            <label>
+                Contact
+                <input @bind="VendorContact" placeholder="Phone number" />
+            </label>
+            <label>
+                VAT No.
+                <input @bind="VendorVat" placeholder="VATNumber" />
+            </label>
+        </div>
+    </section>
+
+    <section class="purchase-section">
+        <div class="purchase-section-row">
+            <h3>Items</h3>
+            <label class="quick-entry">
+                <input type="checkbox" @bind="QuickEntry" />
+                Quick Entry
+            </label>
+        </div>
+
+        <div class="purchase-grid item-grid">
+            <label class="full">
+                Item Name
+                <input @bind="ItemName" placeholder="Enter item name" />
+            </label>
+            <label>
+                Quantity
+                <input type="number" @bind="Quantity" placeholder="Quantity" />
+            </label>
+            <label>
+                Rate
+                <input type="number" @bind="Rate" placeholder="Price" />
+            </label>
+            <label>
+                Amount
+                <input value="@Amount.ToString("0.00")" readonly />
+            </label>
+        </div>
+        <button type="button" class="add-item-button" @onclick="AddItem">Add Item</button>
+    </section>
+
+    <section class="purchase-lines" hidden="@(Items.Count == 0)">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var index = 0; index < Items.Count; index++)
+                {
+                    var item = Items[index];
+                    <tr>
+                        <td>@(index + 1)</td>
+                        <td>@item.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Rate.ToString("0.00")</td>
+                        <td>@item.Amount.ToString("0.00")</td>
+                        <td><button type="button" class="tiny-danger" @onclick="() => RemoveItem(item)">Remove</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <section class="purchase-total-card">
+        <div class="purchase-total-row">
+            <span>Subtotal:</span>
+            <strong>@Subtotal.ToString("0.00")</strong>
+        </div>
+        <div class="purchase-total-row discount-row">
+            <span>Discount</span>
+            <div>
+                <input type="number" @bind="Discount" />
+                <strong class="negative">- @Discount.ToString("0.00")</strong>
+            </div>
+        </div>
+        <div class="purchase-vat-row">
+            <span>VATPercent</span>
+            <label><input type="radio" name="purchase-vat" checked="@IncludeVat" @onchange="@(() => IncludeVat = true)" /> Include VAT</label>
+            <label><input type="radio" name="purchase-vat" checked="@(!IncludeVat)" @onchange="@(() => IncludeVat = false)" /> Exclude VAT</label>
+        </div>
+        <div class="purchase-total-row">
+            <span>VAT Amount (15%):</span>
+            <strong>@VatAmount.ToString("0.00")</strong>
+        </div>
+        <div class="purchase-grand-row">
+            <span>Grand Total</span>
+            <strong>@GrandTotal.ToString("0.00")</strong>
+        </div>
+    </section>
+
+    <section class="purchase-actions">
+        <button type="button" class="clear-purchase" @onclick="ClearAll">Clear All</button>
+        <button type="button" class="save-purchase">Save Bill</button>
+    </section>
+</div>
+
+@code {
+    private string BillNo = "PB-01001";
+    private DateOnly BillDate = new(2026, 6, 11);
+    private string VendorName = "";
+    private string VendorContact = "";
+    private string VendorVat = "";
+    private string ItemName = "";
+    private decimal Quantity;
+    private decimal Rate;
+    private decimal Discount;
+    private bool QuickEntry;
+    private bool IncludeVat = true;
+    private readonly List<PurchaseItem> Items = [];
+
+    private decimal Amount => Quantity * Rate;
+    private decimal Subtotal => Items.Sum(x => x.Amount);
+    private decimal VatAmount => IncludeVat ? Math.Round((Subtotal - Discount) * 0.15m, 2) : 0;
+    private decimal GrandTotal => Math.Max(Subtotal - Discount + VatAmount, 0);
+
+    private void GenerateBillNumber()
+    {
+        BillNo = $"PB-{DateTime.Now:MMddHHmm}";
+    }
+
+    private void AddItem()
+    {
+        var name = string.IsNullOrWhiteSpace(ItemName) ? "Purchase Item" : ItemName;
+        var quantity = Quantity <= 0 ? 1 : Quantity;
+        Items.Add(new PurchaseItem(name, quantity, Rate));
+        ItemName = "";
+        Quantity = 0;
+        Rate = 0;
+    }
+
+    private void RemoveItem(PurchaseItem item)
+    {
+        Items.Remove(item);
+    }
+
+    private void ClearAll()
+    {
+        VendorName = "";
+        VendorContact = "";
+        VendorVat = "";
+        ItemName = "";
+        Quantity = 0;
+        Rate = 0;
+        Discount = 0;
+        IncludeVat = true;
+        QuickEntry = false;
+        Items.Clear();
+    }
+
+    private record PurchaseItem(string Name, decimal Quantity, decimal Rate)
+    {
+        public decimal Amount => Quantity * Rate;
+    }
+}

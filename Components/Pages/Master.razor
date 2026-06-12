@@ -1,0 +1,99 @@
+@page "/master"
+
+<PageTitle>Master Item Entry</PageTitle>
+
+<div class="master-entry-page">
+    <header class="master-title">
+        <span class="title-icon">M</span>
+        <div>
+            <h1>Master Item Entry</h1>
+            <span></span>
+        </div>
+    </header>
+
+    <section class="master-card-grid">
+        <div class="master-entry-card">
+            <h2><span>IE</span> Item Information</h2>
+            <div class="master-form-stack">
+                <label>
+                    Item Code
+                    <input placeholder="Enter item code" />
+                </label>
+                <label>
+                    Item English Name
+                    <input placeholder="Enter English name" />
+                </label>
+                <label>
+                    Item Arabic Name
+                    <input placeholder="Enter Arabic name" />
+                </label>
+            </div>
+        </div>
+
+        <div class="master-entry-card">
+            <h2><span>CA</span> Categorization</h2>
+            <div class="master-form-stack">
+                <label>
+                    Unit
+                    <select>
+                        <option>Select unit</option>
+                        <option>Piece</option>
+                        <option>Box</option>
+                        <option>Kg</option>
+                        <option>Carton</option>
+                    </select>
+                </label>
+                <label>
+                    Under Category
+                    <select>
+                        <option>Select category</option>
+                        <option>Grocery</option>
+                        <option>Beverage</option>
+                        <option>Household</option>
+                        <option>Stationery</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <section class="master-entry-card pricing-card">
+        <h2><span>PI</span> Pricing & Inventory</h2>
+        <div class="pricing-grid">
+            <label>
+                Purchase Rate
+                <input type="number" value="0" />
+            </label>
+            <label>
+                Sales Rate
+                <input type="number" value="0" />
+            </label>
+            <label>
+                Opening Stock
+                <input type="number" value="0" />
+            </label>
+            <label>
+                VAT Status
+                <select>
+                    <option>Select VAT status</option>
+                    <option>VAT Include</option>
+                    <option>VAT Exclude</option>
+                    <option>Non-Taxable</option>
+                </select>
+            </label>
+            <label>
+                Status
+                <select>
+                    <option>Select status</option>
+                    <option>Active</option>
+                    <option>Inactive</option>
+                </select>
+            </label>
+        </div>
+    </section>
+
+    <section class="master-actions">
+        <button type="button" class="secondary">Cancel</button>
+        <button type="button">OK</button>
+    </section>
+</div>

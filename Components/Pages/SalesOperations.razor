@@ -1,0 +1,292 @@
+@page "/sales"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Sales Operations</PageTitle>
+
+<div class="sales-ops-dashboard">
+    <header class="sales-header">
+        <div class="header-titles">
+            <h1>Sales Operations</h1>
+            <p>Manage institutional order flow and trade execution data.</p>
+        </div>
+        <div class="header-actions">
+            <button class="export-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export
+            </button>
+            <button class="create-btn" @onclick="CreateSale">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Create Sale
+            </button>
+        </div>
+    </header>
+
+    <section class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-title">TOTAL VOLUME (MDT)</div>
+            <div class="kpi-value">
+                <span>$24.8M</span>
+                <span class="kpi-trend up"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> 4.2%</span>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">ACTIVE ORDERS</div>
+            <div class="kpi-value">
+                <span>1,402</span>
+                <span class="kpi-trend neutral">Executed: 890</span>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">PENDING SETTLEMENTS</div>
+            <div class="kpi-value">
+                <span>$3.2M</span>
+                <span class="kpi-trend warn"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Action Req</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="sales-tabs">
+        <div class="tab-headers">
+            <button class="tab-btn @(ActiveTab == "Ledger" ? "active" : "")" @onclick='() => ActiveTab = "Ledger"'>SALES LEDGER</button>
+            <button class="tab-btn @(ActiveTab == "Reports" ? "active" : "")" @onclick='() => ActiveTab = "Reports"'>SALES REPORTS</button>
+            <button class="tab-btn @(ActiveTab == "Credit" ? "active" : "")" @onclick='() => ActiveTab = "Credit"'>CREDIT NOTES</button>
+            <button class="tab-btn @(ActiveTab == "Debit" ? "active" : "")" @onclick='() => ActiveTab = "Debit"'>DEBIT NOTES</button>
+        </div>
+
+        <div class="tab-content">
+            @if (ActiveTab == "Ledger")
+            {
+                <div class="table-filters">
+                    <div class="dropdown-filter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Last 30 Days
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                    <div class="dropdown-filter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
+                        All Statuses
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></button>
+                        <button class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></button>
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" /></th>
+                                <th>ORDER ID</th>
+                                <th>DATE</th>
+                                <th>CLIENT /<br/>COUNTERPARTY</th>
+                                <th class="text-right">NOTIONAL<br/>VALUE</th>
+                                <th class="text-right">PNL</th>
+                                <th class="text-center">STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in LedgerOrders)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" /></td>
+                                    <td class="order-id">@order.OrderId</td>
+                                    <td class="date-col">@order.Date.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                    <td class="client-col">@order.Client</td>
+                                    <td class="text-right notional-col">@order.NotionalValue.ToString("C")</td>
+                                    <td class="text-right pnl-col @GetPnlClass(order.Pnl)">@GetPnlDisplay(order.Pnl)</td>
+                                    <td class="text-center">
+                                        <span class="status-badge @order.Status.ToLower()">@order.Status</span>
+                                    </td>
+                                    <td class="actions-col">
+                                        <button class="more-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else if (ActiveTab == "Credit" || ActiveTab == "Debit")
+            {
+                var notesList = ActiveTab == "Credit" ? CreditNotes : DebitNotes;
+                <div class="table-filters">
+                    <div class="dropdown-filter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Last 30 Days
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                    <div class="filter-actions">
+                        @if (ActiveTab == "Credit")
+                        {
+                            <button class="export-btn" @onclick='() => NavigationManager.NavigateTo("/sales/credit-note/new")'>Create New Credit Note</button>
+                        }
+                        else
+                        {
+                            <button class="export-btn" @onclick='() => NavigationManager.NavigateTo("/sales/debit-note/new")'>Create New Debit Note</button>
+                        }
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" /></th>
+                                <th>NOTE ID</th>
+                                <th>DATE</th>
+                                <th>CLIENT</th>
+                                <th>REASON</th>
+                                <th class="text-right">AMOUNT</th>
+                                <th class="text-center">STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (notesList.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="8" style="text-align:center; padding: 40px; color: #8c8c9a;">No records found.</td>
+                                </tr>
+                            }
+                            @foreach (var note in notesList)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" /></td>
+                                    <td class="order-id" style="color: #c3b2f1; font-weight: 700;">@note.NoteId</td>
+                                    <td class="date-col">@note.Date.ToString("yyyy-MM-dd")</td>
+                                    <td class="client-col">@note.Client</td>
+                                    <td>@note.Reason</td>
+                                    <td class="text-right">@note.Amount.ToString("C")</td>
+                                    <td class="text-center">
+                                        <span class="status-badge @(note.Status == "Approved" ? "settled" : "pending")">@note.Status</span>
+                                    </td>
+                                    <td class="actions-col">
+                                        <button class="more-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else if (ActiveTab == "Reports")
+            {
+                <div class="table-filters">
+                    <div class="dropdown-filter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        This Month
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="export-btn">Generate Report</button>
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>REPORT ID</th>
+                                <th>DATE GENERATED</th>
+                                <th>PERIOD</th>
+                                <th>GENERATED BY</th>
+                                <th class="text-center">STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (SalesReports.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="6" style="text-align:center; padding: 40px; color: #8c8c9a;">No reports generated.</td>
+                                </tr>
+                            }
+                            @foreach (var report in SalesReports)
+                            {
+                                <tr>
+                                    <td class="order-id">@report.ReportId</td>
+                                    <td class="date-col">@report.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@report.Period</td>
+                                    <td>@report.GeneratedBy</td>
+                                    <td class="text-center">
+                                        <span class="status-badge @(report.Status == "Ready" ? "settled" : "pending")">@report.Status</span>
+                                    </td>
+                                    <td class="actions-col">
+                                        <button class="export-btn" style="padding: 4px 10px; font-size: 0.75rem;">Download</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-tab">
+                    <p>Features for @ActiveTab are coming soon.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string ActiveTab = "Ledger";
+
+    private void CreateSale()
+    {
+        NavigationManager.NavigateTo("/sales/new");
+    }
+
+    private string GetPnlClass(decimal pnl)
+    {
+        if (pnl > 0) return "positive";
+        if (pnl < 0) return "negative";
+        return "neutral";
+    }
+
+    private string GetPnlDisplay(decimal pnl)
+    {
+        if (pnl == 0) return "—";
+        return (pnl > 0 ? "+" : "") + pnl.ToString("C");
+    }
+
+    private readonly List<LedgerOrder> LedgerOrders = new()
+    {
+        new("ORD-9921-X", new DateTime(2024, 10, 24, 14, 32, 01), "Apex Global Macros", 1250000.00m, 4200.00m, "Settled"),
+        new("ORD-9922-Y", new DateTime(2024, 10, 24, 13, 15, 44), "Vanguard Strategies", 450000.00m, -1100.00m, "Pending"),
+        new("ORD-9923-Z", new DateTime(2024, 10, 24, 11, 05, 12), "Quantum Equities", 2100000.00m, 12500.00m, "Settled"),
+        new("ORD-9924-A", new DateTime(2024, 10, 23, 16, 45, 00), "Meridian Capital", 850000.00m, 0.00m, "Failed"),
+        new("ORD-9925-B", new DateTime(2024, 10, 23, 9, 30, 00), "Citadel Horizons", 3400000.00m, 18200.00m, "Settled")
+    };
+
+    private readonly List<NoteRecord> CreditNotes = new()
+    {
+        new("CRN-1001", new DateTime(2024, 10, 20), "Apex Global Macros", 1500.00m, "Price Adjustment", "Approved"),
+        new("CRN-1002", new DateTime(2024, 10, 21), "Quantum Equities", 500.00m, "Return", "Pending")
+    };
+
+    private readonly List<NoteRecord> DebitNotes = new()
+    {
+        new("DBN-2001", new DateTime(2024, 10, 22), "Vanguard Strategies", 300.00m, "Additional Charge", "Approved")
+    };
+
+    private readonly List<ReportRecord> SalesReports = new()
+    {
+        new("RPT-1001", new DateTime(2024, 10, 24, 15, 0, 0), "October 2024", "System", "Ready"),
+        new("RPT-1002", new DateTime(2024, 9, 30, 23, 59, 0), "September 2024", "Admin", "Ready")
+    };
+
+    private record LedgerOrder(string OrderId, DateTime Date, string Client, decimal NotionalValue, decimal Pnl, string Status);
+    private record NoteRecord(string NoteId, DateTime Date, string Client, decimal Amount, string Reason, string Status);
+    private record ReportRecord(string ReportId, DateTime Date, string Period, string GeneratedBy, string Status);
+}
