@@ -1,0 +1,21 @@
+{
+  "name": "YKodeX Business",
+  "short_name": "YKodeX",
+  "description": "Sales, purchase, stock, expense, and ZATCA workflows.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070d19",
+  "theme_color": "#070d19",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
